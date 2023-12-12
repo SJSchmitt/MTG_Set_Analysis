@@ -54,6 +54,7 @@ def scrapeCards(cardLinks, setAbbr):
     power = []
     toughness = []
     cardSet = []
+    cardText = []
 
     for link in cardLinks:
         browser.visit(link)
@@ -69,10 +70,13 @@ def scrapeCards(cardLinks, setAbbr):
 
         # converted mana cost (cmc)
         mc = manaCost.replace('{X}', '').replace('}{', ',').replace('{', '').replace('}', '').split(',')
-        if mc[0].isdigit():
-            cmc.append(int(mc[0]) + len(mc) - 1)
-        else:
-            cmc.append(len(mc))
+        conMC = 0
+        for pip in mc:
+            if pip.isdigit():
+                conMC += int(pip)
+            else:
+                conMC += 1
+        cmc.append(conMC)
 
         # colors
         white.append('1') if 'W' in manaCost else white.append('0')
@@ -84,9 +88,9 @@ def scrapeCards(cardLinks, setAbbr):
         # card type, subtype, and supertype
         fullType = cardSoup.select('p.card-text-type-line')[0].text.strip()
         super = ''
-        if 'Snow ' in fullType:
-            super += 'Snow '
-            fullType = fullType.replace('Snow ', '')
+        if 'Basic ' in fullType:
+            super += 'Basic '
+            fullType = fullType.replace('Basic ', '')
         if 'Legendary ' in fullType:
             super += 'Legendary '
             fullType = fullType.replace('Legendary ', '')
@@ -125,17 +129,31 @@ def scrapeCards(cardLinks, setAbbr):
         
         # set
         cardSet.append(setAbbr)
-    return manaCosts, cmc, superType, cardType, subtype, rarity, power, toughness, cardSet, white, blue, black, red, green
+
+        # oracle text
+        words = ''
+        text = cardSoup.select('div.card-text-oracle p')
+        if len(text) == 0:
+            words = ''
+        else: 
+            for line in text:
+                if len(words)==0:
+                    words += line.text
+                else:
+                    words += " // " + line.text
+        cardText.append(words)
+
+    return manaCosts, cmc, superType, cardType, subtype, rarity, power, toughness, cardSet, white, blue, black, red, green, cardText
 
 def setScrape(setAbbr):
     setLink = "https://scryfall.com/sets/" + setAbbr
     # scrape card names and links for the set
     names, cardLinks, release = scrapeCardList(setLink)
     # scrape card details
-    manaCosts, cmc, superType, cardType, subtype, rarity, power, toughness, cardSet, white, blue, black, red, green = scrapeCards(cardLinks, setAbbr)
+    manaCosts, cmc, superType, cardType, subtype, rarity, power, toughness, cardSet, white, blue, black, red, green, text = scrapeCards(cardLinks, setAbbr)
     df = pd.DataFrame({'Card': names, 'Set': cardSet, 'Release': release, 'Supertype': superType, 'Type': cardType, 'Subtype': subtype, 'Mana_Cost': manaCosts, 
                     'CMC': cmc, 'Power': power, 'Toughness': toughness, 'Rarity': rarity, 
-                   'White': white, 'Blue': blue, 'Black': black, 'Red': red, 'Green': green, 'Link': cardLinks})
+                   'White': white, 'Blue': blue, 'Black': black, 'Red': red, 'Green': green, "Text": text, 'Link': cardLinks})
     
     newDf = df.drop_duplicates(subset=['Card'])
     return newDf

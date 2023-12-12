@@ -1,5 +1,12 @@
-# config
+# config/passwords
 config.py
+.env
+database.json
+
+# node.js modules
+node_modules/
+package-lock.json
+package.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
