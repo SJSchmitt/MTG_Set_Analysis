@@ -49,7 +49,7 @@ This difference has been trending upwards, with an approximate average of 1.45 f
 
 Legendary creatures are cards that decks are often built around.  They are generally stronger than nonlegendary creatures of the same CMC, though often that strength comes through abilities more than numbers.  As such, I looked into the percent of each set that is legendary, to see if that ratio has been changing over time.
 
-![A graph displaying the percentage of each set that is legendary by release month](images/legendary_percent_over_time.png)
+![A graph displaying the percentage of each set that is legendary by release month](images/legends_over_time.png)
 
 We can plainly see that the ratio of legendary to nonlegendary cards is increasing over time, with 9th Edition (released in June, 2005) being the last set to have no legendary cards.
 
