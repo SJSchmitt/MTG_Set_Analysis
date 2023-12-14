@@ -35,13 +35,13 @@ The final results of the scraping were exported to PostgreSQL using Python's Pan
 
 Comparing the power and toughness of a 1 CMC creature to that of a 15 CMC creature is essentially meaningless, so many comparisons are made by looking at a single CMC value.  3 is the most common CMC value, so that is often what's used.  Here, for example, I compare the median and average powers and toughnesses of 3 CMC creatures over time. 
 
-![A graph displaying the trends of average and median power for 3 CMC creatures by release month](images/3cmc_avg_med_power.png)  ![A graph displaying the trends of average and median toughness for 3 CMC creatures by release month](images/3cmc_avg_med_toughness.png)
+![A graph displaying the trends of average and median power for 3 CMC creatures by release month](src/static/images/3cmc_avg_med_power.png)  ![A graph displaying the trends of average and median toughness for 3 CMC creatures by release month](src/static/images/3cmc_avg_med_toughness.png)
 
 As we can see, both the average and median values for power and toughness have positive trends, with the average power increasing at the greatest rate.  The median power is consistently 2, though in the past the exceptions were 1 power and more recently the exceptions are 3 power instead.  The median power is trending upwards at a slightly greater rate than the average power, changing from a consistent 2 in the past to the more recent oscillation between 2 and 3.  Power and toughness alone do not determine the strength of a card, but this baseline does support an idea of power creep, at least amongst creatures.
 
 It is also fairly common practice to compare the power and toughness to the CMC to determine if a card is good or not.  As such, I compared the sum of a card's power and toughness to its CMC, and took the average for each set.
 
-![A graph showing the average difference between CMC and power/toughness over time](images/creature_cmc_vs_stats_2.png)
+![A graph showing the average difference between CMC and power/toughness over time](src/static/images/creature_cmc_vs_stats_2.png)
 
 This difference has been trending upwards, with an approximate average of 1.45 for the first 5 sets and 2.22 for the 5 most recent sets.  This shows that players are getting more power and toughness for less mana than they used to.
 
@@ -49,13 +49,13 @@ This difference has been trending upwards, with an approximate average of 1.45 f
 
 Legendary creatures are cards that decks are often built around.  They are generally stronger than nonlegendary creatures of the same CMC, though often that strength comes through abilities more than numbers.  As such, I looked into the percent of each set that is legendary, to see if that ratio has been changing over time.
 
-![A graph displaying the percentage of each set that is legendary by release month](images/legends_over_time.png)
+![A graph displaying the percentage of each set that is legendary by release month](src/static/images/legends_over_time.png)
 
 We can plainly see that the ratio of legendary to nonlegendary cards is increasing over time, with 9th Edition (released in June, 2005) being the last set to have no legendary cards.
 
 I also compared the average power and toughness of 3 CMC legendary cards to that of 3 CMC nonlegendary cards over time, to see if the legendaries were increasing in number but decreasing in numerical strength.
 
-![A graph showing the average power of 3 cmc legendary vs nonlegendary creatures](images/avg_power_leg_non_3cmc.png) ![A graph showing the average toughness of 3 cmc legendary vs nonlegendary creatures](images/avg_tough_leg_non_3cmc.png)
+![A graph showing the average power of 3 cmc legendary vs nonlegendary creatures](src/static/images/avg_power_leg_non_3cmc.png) ![A graph showing the average toughness of 3 cmc legendary vs nonlegendary creatures](src/static/images/avg_tough_leg_non_3cmc.png)
 
 Here we see that the average power and toughness of legendaries were once lower than those of nonlegendaries, but that is no longer the case.  While the power and toughness of all cards are trending upwards, the average power of legendary creatures is increasing at nearly twice the rate of nonlegendary creatures, and the average toughness of legendaries is increasing at nearly four times the rate of nonlegendaries.
 
@@ -69,25 +69,25 @@ The average CMC of planeswalkers was 4.2 when they were first introduced, and 4 
 
 Multicolor cards, or gold cards, are harder to play than single color cards, as they require more specific lands.  As a tradeoff, they usually are stronger than single color cards.  Here, we see the average difference between the cmc and the sum of power and toughness of multicolor and single color cards by set.
 
-![A graph showing the difference between cmc and power/toughness by set](images/stats_multi_mono.png)
+![A graph showing the difference between cmc and power/toughness by set](src/static/images/stats_multi_mono.png)
 
 The power and toughness compared to cmc is higher for multicolor cards than for single color cards, though single color cards are trending upwards at a slightly greater rate.  At the same time, the general trend is that newer sets have a greater percentage of multicolor cards than older sets, with Magic 2014 in July, 2013 being the last standard set with no multicolor cards at all.  
 
-![A graph showing the percent of each set that is multicolor by release month](images/multicolor_time.png)
+![A graph showing the percent of each set that is multicolor by release month](src/static/images/multicolor_time.png)
 
 ### Rarity 
 
 The rarity of a card is dependent on how powerful a card is expected to be - the higher the rarity, the more desirable the card.  As such, it is not surprising to see that mythic rare cards and rare cards generally have a greater difference between power/toughness and CMC than common and uncommon cards.
 
-![A graph showing the difference between cmc and power/toughness by rarity over time](images/stats_rarity.png)
+![A graph showing the difference between cmc and power/toughness by rarity over time](src/static/images/stats_rarity.png)
 
 It may be surprising to see that that value for mythic rare cards is trending down, while every other rarity is trending up, but mythic rare was only introduced in Shards of Alara in October, 2008, and has had the least time to find their balance.  Also, there are significantly fewer mythic rare cards than any other type, so any variance shows more drastically.  Rare cards are increasing in this difference ever so slightly faster than common cards.
 
-![A graph showing the percentage of each set at each rarity](images/rarity_over_time.png)
+![A graph showing the percentage of each set at each rarity](src/static/images/rarity_over_time.png)
 
 Since magic was created, the percentage of common cards in each set has been trending upwards.  The percentage of rare and mythic rare cards has been decreasing.  In the last ten years, since April 2013, this trend is reversed, with the percentage of rare cards increasing and common cards decreasing. 
 
-![A graph of the percentage of each set at each rarity since April 2013](images/rarity_since_2013.png)
+![A graph of the percentage of each set at each rarity since April 2013](src/static/images/rarity_since_2013.png)
 
 <!-- ## Challenges
 
