@@ -25,7 +25,7 @@ As such, I decided to attempt to look into it analytically.  The first stage of 
 
 ## Scraping the Data
 
-I used Python's [Beautiful Soup](https://beautiful-soup-4.readthedocs.io/en/latest/) and [Splinter](https://splinter.readthedocs.io/en/stable/) libraries to scrape this data from [Scryfall](https://scryfall.com/sets), a website that indexes Magic cards.  I find Scryfall easy to navigate, with all the data I was looking for conveniently arranged.  In [set_scrape.py](set_scrape.py), I created two functions: `scrapeCardList` and `scrapeCards`.  `scrapeCardList` uses a link to a particular set, and scrapes the name, link, and release date of each card.  `scrapeCards` then uses the list of card links to collect the power, toughness, loyalty, mana cost, rarity, full card type, and text from each card.  Mana cost is expressed as {number}{color}{color}, so I was able to extract the CMC and the colors of each card within the `scrapeCards` function.  Loyalty and toughness were grouped together for convenience, as no card could have both and it prevented having a mostly empty Loyalty list.  The full card type was split into supertypes, types, and subtypes, which have not been used in this project but are simply subclassifications of creatures, such as dragon or wizard.
+I used Python's [Beautiful Soup](https://beautiful-soup-4.readthedocs.io/en/latest/) and [Splinter](https://splinter.readthedocs.io/en/stable/) libraries to scrape this data from [Scryfall](https://scryfall.com/sets), a website that indexes Magic cards.  I find Scryfall easy to navigate, with all the data I was looking for conveniently arranged.  In [set_scrape.py](set_scrape.py), I created two functions: `scrapeCardList` and `scrapeCards`.  `scrapeCardList` uses a link to a particular set, and scrapes the name, link, and release date of each card.  `scrapeCards` then uses the list of card links to collect the power, toughness, loyalty, mana cost, rarity, full card type, and text from each card.  Mana cost is expressed as {number}{color}{color}, so I was able to extract the CMC and the colors of each card within the `scrapeCards` function.  Loyalty and toughness were grouped together for convenience, as no card could have both and it prevented having a mostly empty Loyalty list.  The full card type was split into supertypes, types, and subtypes.  Subtypes have not been used in this project, but they are simply subclassifications of cards, such as dragon or equipment.
 
 ## Results
 
@@ -33,7 +33,7 @@ The final results of the scraping were exported to PostgreSQL using Python's Pan
 
 ### Power and Toughness
 
-Comparing the power and toughness of a 1 CMC creature to that of a 15 CMC creature is essentially meaningless, so many comparisons are made by looking at a single CMC value.  3 is the most common CMC value, so that is often what's used.  Here, for example, I compare the median and average powers and toughnesses of creatures over time. 
+Comparing the power and toughness of a 1 CMC creature to that of a 15 CMC creature is essentially meaningless, so many comparisons are made by looking at a single CMC value.  3 is the most common CMC value, so that is often what's used.  Here, for example, I compare the median and average powers and toughnesses of 3 CMC creatures over time. 
 
 ![A graph displaying the trends of average and median power for 3 CMC creatures by release month](images/3cmc_avg_med_power.png)  ![A graph displaying the trends of average and median toughness for 3 CMC creatures by release month](images/3cmc_avg_med_toughness.png)
 
