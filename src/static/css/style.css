@@ -1,0 +1,16 @@
+#introduction{
+    text-align: justify;
+    font-style:oblique;
+}
+
+.main{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTG Set Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="src/static/css/style.css">
+</head>
+<body>
+    <!-- tableau syntax
+        <div class='tableauPlaceholder' id='viz1669163259470' style='position: relative'><noscript><a href='#'><img alt='Price vs Property type ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Pr&#47;PricingvsPropertyType&#47;PricevsPropertytype&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='PricingvsPropertyType&#47;PricevsPropertytype' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Pr&#47;PricingvsPropertyType&#47;PricevsPropertytype&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1669163259470');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+        <p class="chart-desc"> The chart above shows the range of property types and how populous each is. Entire homes and rental units 
+            are far more common than private rooms.
+        </p>
+    -->
+    <div class="container-fluid">
+        <!-- Jumbotron Row -->
+        <div class="row">
+            <div class="jumbotron text-center bg-image">
+                <h1>MTG Set Analysis</h1>
+            </div>
+        </div>
+
+        <div class="row main" id="introduction">
+            <p>This project aims to compare Magic the Gathering standard sets over time, observing changes in the style and power of cards.  
+                Magic the Gathering (MTG) was first released in August, 1993, and is still a popular trading card game today.  With over 30 years 
+                and over 25,000 cards printed to standard sets, the variability in games is massive and fascinating.  Within any long-running 
+                trading card game, there is a concept known as <i>power creep</i>.  This is when new cards have to compete against old cards, both 
+                in gameplay and in marketability.  For new cards to sell as well as possible, they need to feel more powerful and desirable than 
+                the cards players already own, so the power level continutes to rise over the years.  Eventually, this can lead to games becoming 
+                unplayable and dying out.  
+                <br><br>
+                Mark Rosewater, the Head Designer for Magic since 2003, made a comment in a 2013 interview about how he and his team are trying to 
+                address power creep: "Our development team has a process that I call the Escher Stairwell (named after a classic painting by the 
+                famous artist). Each set has things that go up in power while other things are brought down in power. This creates the illusion 
+                that the power is always going up because the focus is where we are pushing the power. This technique helps to create the illusion 
+                of the power increasing when, in fact, it actually stays pretty even."  Despite his comment and efforts, many players still believe 
+                power creep to be a real and genuine threat to the card game they love.
+                <br><br>
+                As such, I decided to attempt to look into it analytically.  The first stage of this project is looking at numerical and categorical 
+                card data, values that broker no argument as to their meaning or relevance.  I'll break down some of these findings here.
+            </p>
+        </div>
+
+        <hr/>
+
+        <div class="row main" id="card_anatomy">
+            <h3>Card Values</h3>
+            <p>First, allow me to define the values I am using in my analysis.  Below is an example magic card, with the most relevant features named.</p>
+            <img class="image" src="src/static/images/card_anatomy.png" alt="a picture of a magic the gathering card with labels identifying various features">
+            <p>The card name is the identifier for a card.  Some cards are printed with multiple different artworks in a set, but I only kept one copy of each 
+                card name per set.  If the same card was printed in multiple sets, I did include it in each set it appeared in.</p><br>
+
+            <p>Mana is a resource produced by land cards that is used to play other cards and activate certain abilities.  The mana cost of a card includes the 
+                color(s) and value of mana required to play it.  The converted mana cost (CMC) is the total value needed, disregarding color.  A common practice 
+                to judge the strength of a set is to look at the abilities and statistics of the cards with a CMC of 3.  For now, this project uses CMC rather than
+                the mana cost.  Most lands produce only one or two colors of mana, so most decks are also limited in which colors they play.  Each color and 
+                color pair support different play styles and have different synergies with each other.  Multicolor cards, colloquially known as 'gold cards,' 
+                are often the core of a deck, with other cards chosen to support and bolster those gold cards.</p> <br>
+
+            <p>The type line gives the <i>supertype</i>, <i>type</i>, and <i>subtype</i> of a card.  Every card has a type, but not all cards have super- or 
+                sub- types.  The type is a category of card, with each type having different rules.  The example card has the Legendary supertype, the Creature 
+                type, and Kor and Cleric for subtypes.  The most common card types are as follows: </p>
+                <ul>
+                    <li><i>Land</i>: Lands have no mana cost, and instead produce mana.  Only one land can be played a turn, unless there is a card in 
+                        play that works around that rule.</li>
+                    <li><i>Creature</i>: Creatures are the most common card type in MTG.  These cards attack opponents and block opponents from attacking 
+                        you.  Many also have additional abilities that will be included in this analysis in a later stage.</li>
+                    <li><i>Artifacts and Enchantments</i>: Artifacts and enchantments are cards that stay in play and have an effect (passive or activated) 
+                        on players, cards, or the game state in general. These cards cannot attack or block.</li>
+                    <li><i>Instants</i>: Instants can be cast at any time, often in response to another action.  They do not remain in play, and their 
+                        effect is short lived.</li>
+                    <li><i>Sorceries</i>: Sorceries, like instants, have a short lived effect and do not remain in play.  Unlike instants, they can only be 
+                        cast on your turn.</li>
+                    <li><i>Planeswalker</i>: Planeswalkers are powerful commanders that can be targetted like a player.  They typically have two or three 
+                        abilities, one of which can be activated on each of your turns.  These abilities affect a planeswalker's *loyalty*, either increasing or 
+                        decreasing the loyalty.</li>
+                </ul>
+            <p>Supertypes are an additional descriptor added to the main card types, i.e. a <i>legendary</i> creature.  The supertypes in MTG are: 
+                basic, legendary, snow, tribal, and world.  Snow, tribal, and world are limited in their use, but legendary cards are in nearly every 
+                set.  Legendary cards are typically more powerful, but a player can only have one copy in play at a time.  Basic applies only to 
+                lands, and refers to lands that produce a single color of mana with no additional abilities.</p>
+            <p>Subtypes are simply subcategories of card, which the text of certain cards care about - for example, a card may have an ability that affects
+                all cards with the cleric subtype - but have little to no effect on the strength of a card.  As such, while subtypes are included in my data, 
+                they are not used in this analysis.</p><br>
+
+            <p>The set symbol is an icon showing which set a card is from.  The color of the set symbol also represents the card's <i>rarity</i>.  
+                Rarity indicates the frequency with which a card is printed, and is also a good way to approximate power level.  The rarities are common (black), 
+                uncommon (grey), rare (gold), and mythic rare (red).  Some older cards were printed at one rarity in their original set, and then reprinted or changed to a 
+                different rarity as card standards change and their effectiveness was seen in competitive play.</p><br>
+
+            <p>The power and toughness represent a creature's combat capability.  Power is the offensive capability, while toughness is the defensive capability.  
+                When a creature attacks, it deals damage equal to its power to a target planeswalker or player, or to a blocking creature used to defend the 
+                target.  When a creature blocks or takes damage from another source, its toughness is reduced by that value until the end of the turn.  If the 
+                toughness is reduced to 0, the creature dies and is removed from play.</p><br>
+
+            <p>Most of a card's true power lies in its text, the passive and activated abilities a card grants its owner.  Text-based analysis is outside the 
+                current scope of this project, but it is something I hope to add in the future.
+            </p>
+        </div>
+
+        <hr/>
+        <h3 class="main">Set Analysis</h3>
+        <p class="main">The data for this project was scraped from <a href="https://scryfall.com/sets">Scryfall</a>, a website that indexes Magic cards,
+        using the Beautiful Soup library for Python.  The data was then exported to Tableau to analyze how these various card metrics have changed over 
+        time, the full results of which can be viewed through <a href="https://public.tableau.com/app/profile/sjschmitt13/viz/MTG_Sets_Prelim/colorcountbyset">
+            Tableau Public, here</a>.  The most interesting and relevant findings are also described here.</p>
+
+            <!-- chart links 
+            <div class='tableauPlaceholder' id='viz1702529619990' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianPower&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='MTG_Sets_Prelim&#47;AvgvsMedianPower' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianPower&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1702529619990');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+            <div class='tableauPlaceholder' id='viz1702530084822' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianToughness&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='MTG_Sets_Prelim&#47;AvgvsMedianToughness' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianToughness&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1702530084822');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>    
+            -->
+
+        <!-- accordion -->
+        <div class="main row" id="test">
+            <div class="accordion" id="pt-accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="power-heading">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#power-graph" aria-expanded="true" aria-controls="power-graph">
+                            Power
+                        </button>
+                    </h2>
+                    <div id="power-graph" class="accordion-collapse collapse show" aria-labelledby="power-heading" data-bs-parent="#pt-accordion">
+                        <div class="accordion-body">
+                            <div class='tableauPlaceholder' id='viz1702529619990' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianPower&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='MTG_Sets_Prelim&#47;AvgvsMedianPower' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianPower&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1702529619990');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="tough-heading">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tough-graph" aria-expanded="false" aria-controls="tough-graph">
+                            Toughness
+                        </button>
+                    </h2>
+                    <div id="tough-graph" class="accordion-collapse collapse show" aria-labelledby="tough-heading" data-bs-parent="#pt-accordion">
+                        <div class="accordion-body">
+                            <div class='tableauPlaceholder' id='viz1702530084822' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianToughness&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='MTG_Sets_Prelim&#47;AvgvsMedianToughness' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;MT&#47;MTG_Sets_Prelim&#47;AvgvsMedianToughness&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1702530084822');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <!-- 'radio' buttons -->
+        <!-- <div class="row main" id="test" >
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+                <label class="btn btn-light active" data-bs-toggle="collapse" data-bs-target=".collapse" aria-expanded="true" aria-controls="powerGraph" for="btnradio1">Power</label>
+              
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-light" data-bs-toggle="collapse" data-bs-target=".collapse" aria-expanded="false" aria-controls="toughGraph"for="btnradio2">Toughness</label>
+            </div>
+            <div class="collapse" id="powerGraph">
+                <div class="card card-body">
+                    Power placeholder
+                </div>
+            </div>
+            <div class="collapse" id="toughGraph">
+                <div class="card card-body">
+                    Toughness button placeholder
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row main">
+            <h1>space at bottom</h1>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
