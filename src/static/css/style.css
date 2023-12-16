@@ -1,6 +1,5 @@
 #introduction{
     text-align: justify;
-    font-style:oblique;
 }
 
 .jumbotron{
@@ -23,17 +22,26 @@
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
-.footer{
-    margin-left: none;
-    margin-right: none;
+.foot{
+    background-color: slategray;
+    min-height: 70px;
 }
 
 body{
-    margin-bottom: 100px;
     background-color: whitesmoke;
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
 h3, h4{
     color: darkslategray;
+}
+
+.contacts{
+    color: whitesmoke;
+    font-size: 10pt;
+    margin:auto;
+}
+
+.contacts a:link{
+    color: whitesmoke;
 }
