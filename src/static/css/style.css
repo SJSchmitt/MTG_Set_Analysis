@@ -36,6 +36,12 @@ h3, h4{
     color: darkslategray;
 }
 
+#card-picture{
+    padding-left: 22%;
+    padding-right: 22%;
+    background-color: white;
+}
+
 .contacts{
     color: whitesmoke;
     font-size: 10pt;
@@ -44,4 +50,8 @@ h3, h4{
 
 .contacts a:link{
     color: whitesmoke;
+}
+
+.tableauPlaceholder{
+    width: 55%;
 }
