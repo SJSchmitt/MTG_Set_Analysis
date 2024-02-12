@@ -1,0 +1,32 @@
+body{
+    background-color: #8391a1;
+}
+
+#nav{
+    background-color: #001440;
+}
+
+#nav a{
+    margin: 10px;
+}
+
+.header{
+    height: 100px;
+    background-color: #001440;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 52pt;
+    font-family: serif;
+}
+
+.well{
+    margin-top: 10px;
+}
+
+#selDataset {
+    height: 20px;
+    font-size: 10pt;
+    bottom: 0;
+    color: #000;
+    align-self: flex-end;
+}
